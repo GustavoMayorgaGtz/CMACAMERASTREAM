@@ -1,95 +1,69 @@
+# CMACameraStreamer
 
-```markdown
-# CMACameraStreamer - Transmisión de Cámara CMA en Tiempo Real
+CMACameraStreamer es una librería que te permite transmitir el flujo de video de una cámara a través de WebSocket. Permite configurar la calidad de la transmisión (baja, media, alta) y ajusta la frecuencia de envío de los frames en función de la calidad seleccionada. Ideal para aplicaciones de monitoreo en tiempo real.
 
-Esta librería permite transmitir frames de una cámara en tiempo real mediante WebSocket, detectando movimiento y enviando los datos de los frames a un servidor específico. Los datos son enviados en forma de imágenes JPEG comprimidas, y el comportamiento de transmisión se ajusta según la calidad de la imagen seleccionada.
+## Requisitos
 
-## Características
-
-- **Conexión WebSocket**: Se conecta a un servidor WebSocket para la transmisión de frames.
-- **Detección de Movimiento**: Solo transmite imágenes cuando detecta movimiento en la cámara.
-- **Calidad Ajustable**: Puedes elegir entre tres niveles de calidad de transmisión ("low", "medium", "high") que afectan la resolución y la frecuencia de envío de los frames.
-- **Recuperación Automática**: Si la conexión se pierde, la librería intentará reconectarse automáticamente.
+- Python 3.x
+- OpenCV
+- `python-socketio`
 
 ## Instalación
 
-1. Instalar las dependencias necesarias:
+Para instalar las dependencias necesarias, sigue estos pasos:
+
+1. **Clona el repositorio** o descarga los archivos.
+
+2. **Instala las dependencias**:
+
+   Asegúrate de tener `pip` instalado en tu entorno de Python. Si no lo tienes, puedes instalarlo desde [aquí](https://pip.pypa.io/en/stable/).
+
+   Luego, ejecuta el siguiente comando para instalar las dependencias necesarias:
+
    ```bash
-   pip install python-socketio opencv-python
+   pip install opencv-python python-socketio
    ```
 
-2. Si no tienes instalado `opencv-python`, puedes instalarlo usando:
+   **Nota**: Si tienes problemas con la instalación de `opencv-python` en tu sistema, consulta [esta página de instalación](https://docs.opencv.org/4.x/d2/de6/tutorial_py_setup_in_ubuntu.html) para más detalles sobre cómo instalar OpenCV en tu sistema operativo.
+
+3. **Instalación de la librería**:
+
+   Si estás utilizando esta librería como un paquete independiente, puedes instalarla ejecutando:
+
    ```bash
-   pip install opencv-python
+   pip install .
    ```
+
+   Esto instalará la librería en tu entorno de Python.
 
 ## Uso
 
-1. Importa y crea una instancia de la clase `CMACameraStreamer`:
-
-   ```python
-   from CMACameraStreamer import CMACameraStreamer
-
-   server = CMACameraStreamer(
-       server_url='ws://www.cmasystems.com.mx/',
-       group_name='1733252767654',
-       quality='medium'  # Opciones: "low", "medium", "high"
-   )
-   server.connect_and_stream()
-   ```
-
-2. La clase `CMACameraStreamer` se conecta a un servidor WebSocket y comienza a transmitir frames de la cámara con el nivel de calidad seleccionado.
-
-## Métodos
-
-### `__init__(self, server_url, group_name, quality="high")`
-Inicializa la clase `CMACameraStreamer` para transmitir datos desde la cámara.
-
-- **server_url** (str): URL del servidor WebSocket.
-- **group_name** (str): Nombre del grupo donde se enviarán los frames.
-- **quality** (str): Nivel de calidad de la imagen ("low", "medium", "high").
-
-### `_set_quality(self, quality)`
-Define la resolución y el intervalo de envío según el nivel de calidad seleccionado.
-
-- **quality** (str): Nivel de calidad ("low", "medium", "high").
-- **retorna**: Diccionario con la resolución y el intervalo entre frames.
-
-### `_on_connect(self)`
-Se llama cuando se establece la conexión con el servidor.
-
-### `_on_disconnect(self)`
-Se llama cuando se pierde la conexión con el servidor.
-
-### `_on_message(self, data)`
-Recibe y maneja mensajes del servidor.
-
-### `_gen_frames(self)`
-Genera y envía frames de la cámara. Si se detecta movimiento, se transmite el frame a través de WebSocket.
-
-### `connect_and_stream(self)`
-Intenta establecer la conexión con el servidor y comienza a transmitir frames de la cámara.
-
-## Ejemplo de Uso
-
-El siguiente ejemplo muestra cómo crear una instancia de la clase `CMACameraStreamer`, conectarse a un servidor WebSocket y comenzar la transmisión de frames:
+Aquí tienes un ejemplo de cómo utilizar la librería `CMACameraStreamer`:
 
 ```python
+from cmacamera_streamer import CMACameraStreamer
+
+# Inicializa el streamer con la URL del servidor WebSocket, el nombre del grupo y la calidad de transmisión
 server = CMACameraStreamer(
     server_url='ws://www.cmasystems.com.mx/',
     group_name='1733252767654',
     quality='medium'  # Opciones: "low", "medium", "high"
 )
+
+# Conectar y empezar a transmitir el video
 server.connect_and_stream()
 ```
 
-## Contribuciones
+## Contribución
 
-Las contribuciones son bienvenidas. Si tienes alguna idea o encuentras un error, abre un issue o un pull request.
+Si deseas contribuir al proyecto, por favor sigue los siguientes pasos:
+
+1. Haz un fork del repositorio.
+2. Crea una nueva rama para tus cambios (`git checkout -b feature/nueva-caracteristica`).
+3. Realiza tus cambios y haz commit de ellos (`git commit -am 'Añadir nueva característica'`).
+4. Haz push a la rama (`git push origin feature/nueva-caracteristica`).
+5. Crea un Pull Request.
 
 ## Licencia
 
-Este proyecto está bajo la Licencia MIT. Ver el archivo [LICENSE](LICENSE) para más detalles.
-```
-
-Este README proporciona detalles sobre la instalación, uso, métodos y cómo integrar la librería en un proyecto para realizar transmisión en tiempo real desde una cámara con detección de movimiento.
+Este proyecto está bajo la Licencia MIT - consulta el archivo [LICENSE](LICENSE) para más detalles.
